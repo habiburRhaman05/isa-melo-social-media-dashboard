@@ -182,7 +182,7 @@ form{padding:14px 28px 22px;display:grid;grid-template-columns:repeat(3,minmax(0
 .pane-t{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--gold)}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .fld.grow{flex:1}
-#fDesc,#fRev{min-height:78px;height:78px}
+#fDesc,#fRev,#fPrompt{min-height:78px;height:78px}
 @media(max-width:1100px){form{grid-template-columns:1fr}.pane+.pane{border-left:0;padding-left:0;margin-top:18px}}
 .fld{display:flex;flex-direction:column;gap:6px;min-width:0}
 .fld.full{grid-column:1/-1}
@@ -262,7 +262,7 @@ input[readonly]{background:#f7f4fc;color:var(--muted)}
 .vt button.on{background:#fff;color:var(--brand);box-shadow:0 1px 4px rgba(60,30,120,.15)}
 .clab{font-size:10.5px;letter-spacing:.14em;font-weight:600;color:var(--muted)}
 .tw{border:1px solid var(--line);border-radius:18px;overflow:auto}
-.lt{width:100%;border-collapse:collapse;min-width:1120px}
+.lt{width:100%;border-collapse:collapse;min-width:1240px}
 .lt th{background:#f6f1fd;text-align:left;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#6b5f8a;font-weight:700;padding:17px 14px;white-space:nowrap;user-select:none}
 .lt th[data-s]{cursor:pointer}.lt th.on{color:var(--brand)}.lt th svg{margin-left:6px;vertical-align:-1px;opacity:.55}.lt th.on svg{opacity:1}
 .lt td{padding:12px 14px;border-top:1px solid #f0ebf8;max-width:190px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13.5px}
@@ -282,6 +282,9 @@ input[readonly]{background:#f7f4fc;color:var(--muted)}
 .snip{background:#f7f4fc;border-radius:10px;padding:8px 10px;font-size:12px;color:var(--muted);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.snip b{color:var(--ink)}
 .lf{display:flex;align-items:center;gap:8px;border-top:1px solid #f0ebf8;padding-top:9px;font-size:11.5px;font-weight:600;color:var(--muted)}
 .lf .soon{color:var(--gold)}.lf .late{color:var(--red)}.lf .cc{margin-left:auto;display:flex;align-items:center;gap:4px}
+.lv{font-weight:700;color:var(--green);font-size:13.5px}.ct{flex-basis:100%;font-size:12px;color:var(--green);font-weight:700;margin-top:-6px;padding-left:17px}
+#lStats{grid-template-columns:repeat(5,1fr)}#lStats .stat:nth-child(5) b{color:#25704f}
+@media(max-width:900px){#lStats{grid-template-columns:1fr 1fr}}
 .lm{width:min(1060px,100%)}.lh{display:flex;align-items:center;gap:10px}.lh h2{margin:0}
 .lbody{padding:14px 28px 22px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 28px}
 .ph{display:flex;justify-content:space-between;align-items:center}.ph .link-btn{padding:0}
@@ -330,11 +333,6 @@ input[type=tel],input[type=email]{font:inherit;color:var(--ink);border:1px solid
       <p class="sub">Every post, from brief to published, moving through one clear flow.</p>
     </div>
     <div class="head-right">
-    <label class="rate" id="rateBox" title="Global rate. Applies to every task. Owner only.">
-      <span>Credit rate</span><span class="cur">$</span>
-      <input id="rate" type="number" min="0" step="0.01" inputmode="decimal" aria-label="Dollar cost per credit">
-      <span>per credit</span>
-    </label>
     <button class="btn-primary" id="newBtn" type="button">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
       New task
@@ -444,6 +442,7 @@ input[type=tel],input[type=email]{font:inherit;color:var(--ink);border:1px solid
         <div class="fld"><label for="fTitle">Task title</label><input id="fTitle" type="text" required maxlength="120" placeholder="e.g. Prepare weekly market update"></div>
         <div class="fld"><span class="lbl">Task type</span><div class="seg type" id="fType"></div></div>
         <div class="fld"><label for="fDesc">Task description</label><textarea id="fDesc" placeholder="What needs to be done?"></textarea></div>
+        <div class="fld"><label for="fPrompt">Task prompt <span class="hint">(shared with the editor)</span></label><textarea id="fPrompt" placeholder="Paste the prompt or instructions for this task"></textarea></div>
         <div class="fld"><label for="fRef">Task reference <span class="hint">(link or note)</span></label><input id="fRef" type="text" placeholder="Brand kit, brief, inspiration"></div>
         <div class="fld"><label for="fLink">Task submission / video link</label><input id="fLink" type="text" inputmode="url" placeholder="https://"></div>
       </div>
@@ -454,7 +453,7 @@ input[type=tel],input[type=email]{font:inherit;color:var(--ink);border:1px solid
           <div class="fld"><label for="fCreated">Date created <span class="hint">(auto)</span></label><input id="fCreated" type="text" readonly></div>
           <div class="fld"><label for="fDue">Due date</label><input id="fDue" type="date"></div>
         </div>
-        <div class="fld"><label for="fCredits">Credit cost</label><input id="fCredits" type="number" min="0" step="1" value="0"><span id="costPrev"></span></div>
+        <div class="fld"><label for="fCost">Task cost <span class="hint">(USD)</span></label><input id="fCost" type="number" min="0" step="0.01" value="0" inputmode="decimal"></div>
         <div class="fld"><span class="lbl">Priority</span>
           <div class="seg" id="fPrio">
             <input type="radio" name="prio" id="pHigh" value="high"><label for="pHigh" class="high">High</label>
@@ -520,9 +519,9 @@ function typeObj(t){return TYPES.filter(function(x){return x.id===t.type})[0]||T
 var COIN=tsvg('<circle cx="12" cy="12" r="9"/><path d="M14.5 9.5c-.5-.9-1.4-1.3-2.5-1.3-1.5 0-2.6.7-2.6 1.8s1.1 1.6 2.6 1.9 2.6.8 2.6 1.9-1.1 1.8-2.6 1.8c-1.1 0-2-.4-2.5-1.3M12 6.5v1.7M12 15.8v1.7"/>');
 /* global credit rate (dollars per credit), not stored per task */
 var RKEY='smb_rate_v1';
-var rate=(function(){try{var v=parseFloat(localStorage.getItem(RKEY));if(isFinite(v)&&v>=0)return v}catch(e){}return 5})();
+var OLDRATE=(function(){try{var v=parseFloat(localStorage.getItem(RKEY));if(isFinite(v)&&v>=0)return v}catch(e){}return 5})();
 function money(n){return n.toLocaleString('en-US',{style:'currency',currency:'USD'})}
-function cost(t){return (Number(t.credits)||0)*rate}
+function cost(t){return Number(t.cost)||0}
 var CHAT=tsvg('<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>');
 function fmtTime(iso){return new Date(iso).toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})}
 
@@ -551,6 +550,7 @@ function linkLabel(u){
 function isUrl(s){return /^https?:\/\//i.test(s||'')}
 
 var ICON={
+  prompt:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg>',
   ref:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg>',
   link:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3A4 4 0 0 0 11 18.7l1-1"/></svg>',
   cal:'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>'
@@ -561,13 +561,13 @@ function seed(){
   var t=new Date();
   function d(n){return ymd(addDays(t,n))}
   return [
-    {id:'T-101',title:'Prepare weekly market update',desc:'Draft a concise local market update with key insights and one clear call to action for buyers and sellers.',ref:'Weekly market report (Google Doc)',created:d(-3),due:d(3),link:'https://drive.google.com/file/d/market-update',credits:8,priority:'medium',assignees:['isa'],stage:'new',type:'post'},
-    {id:'T-102',title:'Edit property walkthrough reel',desc:'Trim the walkthrough footage, add captions, and prepare the final cut for Instagram.',ref:'Brand kit + raw footage folder',created:d(-2),due:d(1),link:'https://frame.io/review/walkthrough-v2',credits:15,priority:'high',assignees:['rakib'],stage:'working',type:'reel'},
-    {id:'T-103',title:'Review open house announcement',desc:'Check the listing details, final visual, and copy before the announcement goes live.',ref:'Listing sheet MLS 4821',created:d(-1),due:d(0),link:'',credits:5,priority:'low',assignees:['sajib','isa'],stage:'review',type:'image',revision:'',comments:[{id:'c1',author:'Sajib',text:'Please double check the open house time before approving.',at:new Date(t.getTime()-36e5).toISOString()}]}
+    {id:'T-101',title:'Prepare weekly market update',desc:'Draft a concise local market update with key insights and one clear call to action for buyers and sellers.',ref:'Weekly market report (Google Doc)',created:d(-3),due:d(3),link:'https://drive.google.com/file/d/market-update',cost:40,prompt:'Keep the tone friendly and local. End with one clear call to action.',priority:'medium',assignees:['isa'],stage:'new',type:'post'},
+    {id:'T-102',title:'Edit property walkthrough reel',desc:'Trim the walkthrough footage, add captions, and prepare the final cut for Instagram.',ref:'Brand kit + raw footage folder',created:d(-2),due:d(1),link:'https://frame.io/review/walkthrough-v2',cost:75,prompt:'',priority:'high',assignees:['rakib'],stage:'working',type:'reel'},
+    {id:'T-103',title:'Review open house announcement',desc:'Check the listing details, final visual, and copy before the announcement goes live.',ref:'Listing sheet MLS 4821',created:d(-1),due:d(0),link:'',cost:25,prompt:'',priority:'low',assignees:['sajib','isa'],stage:'review',type:'image',revision:'',comments:[{id:'c1',author:'Sajib',text:'Please double check the open house time before approving.',at:new Date(t.getTime()-36e5).toISOString()}]}
   ];
 }
 function load(){
-  try{var raw=localStorage.getItem(KEY);if(raw){var a=JSON.parse(raw);if(Array.isArray(a))return a}}catch(e){}
+  try{var raw=localStorage.getItem(KEY);if(raw){var a=JSON.parse(raw);if(Array.isArray(a)){a.forEach(function(t){if(t.cost==null)t.cost=(Number(t.credits)||0)*OLDRATE;if(t.prompt==null)t.prompt=''});return a}}}catch(e){}
   return seed();
 }
 function save(){try{localStorage.setItem(KEY,JSON.stringify(tasks))}catch(e){}}
@@ -594,7 +594,7 @@ function matches(t){
   if(!inRange(t.created,F.created)) return false;
   if(F.q){
     var names=t.assignees.map(function(a){var p=person(a);return p?p.name:''}).join(' ');
-    var hay=[t.id,typeObj(t).name,t.revision||'',(t.comments||[]).map(function(c){return c.text}).join(' '),t.title,t.desc,t.ref,t.link,names].join(' ').toLowerCase();
+    var hay=[t.id,typeObj(t).name,t.revision||'',(t.comments||[]).map(function(c){return c.text}).join(' '),t.title,t.desc,t.prompt||'',t.ref,t.link,names].join(' ').toLowerCase();
     if(hay.indexOf(F.q.toLowerCase())===-1) return false;
   }
   return true;
@@ -604,14 +604,14 @@ function anyFilter(){return F.priority!=='all'||F.type!=='all'||F.due.from||F.cr
 /* ---------- render ---------- */
 function renderStats(){
   var active=tasks.filter(function(t){return t.stage!=='posted'});
-  var credits=active.reduce(function(s,t){return s+(Number(t.credits)||0)},0);
+  var total=active.reduce(function(s,t){return s+cost(t)},0);
   var review=tasks.filter(function(t){return t.stage==='review'}).length;
   var soonEnd=ymd(addDays(new Date(),7));
   var soon=active.filter(function(t){return t.due&&t.due>=TODAY&&t.due<=soonEnd}).length;
   var reviewLabel=mode==='owner'?'Waiting for your review':'Sent for owner review';
   $('#stats').innerHTML=
     '<div class="stat"><b>'+active.length+'</b><span>Active tasks</span></div>'+
-    '<div class="stat"><b>'+credits+'</b><span>Credits in progress &middot; '+money(credits*rate)+'</span></div>'+
+    '<div class="stat"><b>'+money(total)+'</b><span>Task cost in progress</span></div>'+
     '<div class="stat"><b>'+review+'</b><span>'+reviewLabel+'</span></div>'+
     '<div class="stat"><b>'+soon+'</b><span>Due in the next 7 days</span></div>';
 }
@@ -638,12 +638,12 @@ function cardHTML(t){
     '<div class="c-rows">'+
       '<div class="row">'+ICON.ref+'<span class="k">Reference</span><span class="v">'+refHTML+'</span></div>'+
       '<div class="row">'+ICON.link+'<span class="k">Submission</span><span class="v">'+linkHTML+'</span></div>'+
-      '<div class="row">'+COIN+'<span class="k">Cost</span><span class="v cost">'+money(cost(t))+' <span class="none">('+(Number(t.credits)||0)+' cr)</span></span></div>'+
+      '<div class="row">'+ICON.prompt+'<span class="k">Prompt</span><span class="v">'+(t.prompt?esc(t.prompt):'<span class="none">Not set</span>')+'</span></div>'+
     '</div>'+
     '<div class="c-grid">'+
       '<div><span class="k">Created</span><b>'+fmt(t.created)+'</b></div>'+
       '<div class="'+due.cls+'"><span class="k">Due</span><b>'+due.text+'</b></div>'+
-      '<div><span class="k">Credits</span><b>'+(Number(t.credits)||0)+'</b></div>'+
+      '<div><span class="k">Cost</span><b>'+money(cost(t))+'</b></div>'+
     '</div>'+
     '<div class="c-foot">'+
       (ps.length?'<div class="stack">'+ps.map(avatar).join('')+'</div><span class="names">'+esc(ps.map(function(p){return p.name}).join(', '))+'</span>':'<span class="names">Unassigned</span>')+
@@ -685,8 +685,7 @@ function renderToolbar(){
   $('#typeFilter').classList.toggle('active',F.type!=='all');
   $('#clearAll').hidden=!anyFilter();
 }
-function syncRate(){var r=$('#rate');r.disabled=(mode==='team');if(document.activeElement!==r)r.value=rate.toFixed(2)}
-function render(){renderStats();renderBoard();renderToolbar();syncRate()}
+function render(){renderStats();renderBoard();renderToolbar()}
 
 /* ---------- toast ---------- */
 var toastT;
@@ -705,13 +704,6 @@ $('#clearAll').addEventListener('click',function(){
   $('#q').value='';render();
 });
 $('#typeFilter').addEventListener('change',function(e){F.type=e.target.value;render()});
-$('#rate').addEventListener('input',function(e){
-  var v=parseFloat(e.target.value);
-  rate=(isFinite(v)&&v>=0)?v:0;
-  try{localStorage.setItem(RKEY,String(rate))}catch(err){}
-  renderStats();renderBoard();updateCostPrev();
-});
-$('#rate').addEventListener('blur',syncRate);
 $('#q').addEventListener('input',function(e){F.q=e.target.value.trim();render()});
 document.querySelectorAll('.preview button').forEach(function(b){
   b.addEventListener('click',function(){
@@ -816,8 +808,8 @@ function openModal(id){
   $('#fCreated').value=fmtY(t?t.created:TODAY);
   $('#fDue').value=t?t.due:'';
   $('#fLink').value=t?t.link:'';
-  $('#fCredits').value=t?t.credits:0;
-  updateCostPrev();
+  $('#fCost').value=t?cost(t):0;
+  $('#fPrompt').value=t?(t.prompt||''):'';
   var ty=t?typeObj(t).id:'post';
   document.querySelectorAll('input[name=ttype]').forEach(function(r){r.checked=(r.value===ty)});
   var pr=t?t.priority:'medium';
@@ -834,11 +826,6 @@ function openModal(id){
   overlay.hidden=false;
   setTimeout(function(){$('#fTitle').focus()},30);
 }
-function updateCostPrev(){
-  var c=Math.max(0,parseInt($('#fCredits').value,10)||0);
-  $('#costPrev').textContent='Cost: '+money(c*rate)+' at '+money(rate)+' per credit';
-}
-$('#fCredits').addEventListener('input',updateCostPrev);
 function closeModal(){overlay.hidden=true;editing=null}
 
 $('#cols').addEventListener('click',function(e){
@@ -875,7 +862,8 @@ $('#form').addEventListener('submit',function(e){
     ref:isUrl(ref)||ref.indexOf(' ')>-1||ref.indexOf('.')===-1?ref:normLink(ref)||ref,
     due:$('#fDue').value,
     link:normLink($('#fLink').value),
-    credits:Math.max(0,parseInt($('#fCredits').value,10)||0),
+    cost:Math.max(0,Math.round((parseFloat($('#fCost').value)||0)*100)/100),
+    prompt:$('#fPrompt').value.trim(),
     priority:prio,
     assignees:assignees,
     stage:$('#fStage').value
@@ -986,13 +974,14 @@ const fmtT=i=>new Date(i).toLocaleString('en-US',{month:'short',day:'numeric',ho
 const rel=i=>{const m=(Date.now()-new Date(i))/6e4;return m<1?'just now':m<60?Math.floor(m)+'m ago':m<1440?Math.floor(m/60)+'h ago':Math.floor(m/1440)+'d ago'};
 const relDay=s=>{const n=dd(TODAY,s);return n<=0?'Today':n==1?'Yesterday':n+' days ago'};
 const STAGES=[{id:'new',n:'New Lead',c:'#a99bd0',bg:'#ece4fa',fg:'#6b5f8a'},{id:'contacted',n:'Contacted',c:'#5a2d9c',bg:'#ece4fa',fg:'#5a2d9c'},{id:'qualified',n:'Qualified',c:'#d4a02a',bg:'#fbe9c9',fg:'#8a5a0f'},{id:'proposal',n:'Proposal Sent',c:'#2a1458',bg:'#e4dff0',fg:'#2a1458'},{id:'won',n:'Won',c:'#2f9e6e',bg:'#d5eadf',fg:'#25704f'},{id:'lost',n:'Lost',c:'#c0364a',bg:'#fbe3e8',fg:'#b32d45'}];
+const money=n=>'$'+Math.round(Number(n)||0).toLocaleString('en-US');
 const SG=id=>STAGES.find(s=>s.id==id)||STAGES[0];
 const PEOPLE=[{id:'isa',name:'Isa Melo',ini:'IM',bg:'#e6dcf7',fg:'#5a2d9c'},{id:'rakib',name:'Rakib',ini:'R',bg:'#f6eac0',fg:'#8a6212'},{id:'sajib',name:'Sajib',ini:'S',bg:'#d5eadf',fg:'#25704f'}];
 const PE=id=>PEOPLE.find(p=>p.id==id);
 const PROS=['Realtor','Investor','Developer','Business owner','Architect','Other'];
 const AT={note:['Note',I.note],call:['Call',I.phone],email:['Email',I.mail],meeting:['Meeting',I.cal],message:['Message',I.chat],created:['Lead created',I.plus],stage:['Stage change',I.arrow],update:['Update',I.edit]};
 const PAL=[['#e6dcf7','#5a2d9c'],['#f6eac0','#8a6212'],['#fbe3e8','#b32d45'],['#d5eadf','#25704f']];
-const FIELDS=[['first','First name'],['last','Last name'],['phone','Phone','tel'],['email','Email','email'],['business','Business'],['info','Business info'],['address','Address'],['country','Country'],['pro','Professional'],['source','Source']];
+const FIELDS=[['first','First name'],['last','Last name'],['phone','Phone','tel'],['email','Email','email'],['business','Business'],['info','Business info'],['address','Address'],['country','Country'],['pro','Professional'],['value','Opportunity value (USD)','number'],['source','Source']];
 
 function L(id,f,l,ph,biz,info,ad,co,pro,st,ago,fu,as,n,lt,tx,lag,cl,msg){
   const at=ago?NOW-ago*D-3*H:NOW-H,la=n<2?at:NOW-lag*D-(lag?2*H:0),mid=['call','note','email'],mt=['Called to discuss requirements','Shared the service overview','Sent follow-up details'];
@@ -1001,6 +990,7 @@ function L(id,f,l,ph,biz,info,ad,co,pro,st,ago,fu,as,n,lt,tx,lag,cl,msg){
   if(n>1)acts.push({id:id+'aL',type:lt,author:'Owner',text:tx,at:new Date(la).toISOString()});
   return{id,first:f,last:l,phone:ph,email:f.toLowerCase()+'@'+biz.toLowerCase().replace(/[^a-z]/g,'')+'.example',business:biz,info,address:ad,country:co,pro,stage:st,source:'Contact form, Home page',message:msg||'I would like help with social media content for my business.',created:new Date(at).toISOString(),followUp:fu==null?'':ymd(new Date(NOW+fu*D)),assignee:as,closed:cl==null?'':new Date(NOW-cl*D).toISOString(),acts};
 }
+const VAL={'L-1007':3500,'L-1012':2400,'L-1011':12000,'L-1010':4800,'L-1009':18000,'L-1008':9500,'L-1006':6200,'L-1005':3000,'L-1004':5400,'L-1003':7000,'L-1002':8400,'L-1001':2500};
 const seed=()=>[
 L('L-1007','Tanvir','Hasan','+880 1800 000145','Hasan Properties','Property sales and rentals','Mirpur Road, Dhanmondi, Dhaka','Bangladesh','Realtor','new',0,null,'',1,0,0,0,null,'Please call me about reels and a monthly content plan.'),
 L('L-1012','Amina','Rahman','+880 1700 000101','Rahman Realty Group','Residential brokerage, 8 agents','Road 11, Banani, Dhaka','Bangladesh','Realtor','new',1,null,'',1),
@@ -1013,8 +1003,8 @@ L('L-1005','Lars','Becker','+49 30 5550 0188','Becker Immobilien','Residential s
 L('L-1004','Jason','Lee','+1 555 010 3344','Bay Realty Partners','Brokerage, Bay Area','88 Mission St, San Francisco, CA','United States','Realtor','proposal',10,4,'isa',5,'email','Quote sent, awaiting approval.',2),
 L('L-1003','Mark','Sullivan','+61 2 5550 0144','Sullivan Homes','Home builder, Sydney','5 George St, Sydney','Australia','Developer','lost',12,null,'rakib',5,'stage','Contacted → Lost',2,2),
 L('L-1002','Priya','Nair','+1 416 555 0120','Nair Design Studio','Architecture and design','200 King St W, Toronto','Canada','Architect','won',14,null,'isa',8,'note','Signed a 6-month retainer. Kick-off next Monday.',1,1),
-L('L-1001','Nusrat','Jahan','+880 1900 000177','Jahan Interiors','Interior design studio','House 7, Gulshan 2, Dhaka','Bangladesh','Architect','won',25,null,'rakib',4,'note','Onboarded. First reel due next week.',20,20)];
-function load(){try{const a=JSON.parse(localStorage.getItem(KEY));if(Array.isArray(a)&&a.length)return a}catch(e){}return seed()}
+L('L-1001','Nusrat','Jahan','+880 1900 000177','Jahan Interiors','Interior design studio','House 7, Gulshan 2, Dhaka','Bangladesh','Architect','won',25,null,'rakib',4,'note','Onboarded. First reel due next week.',20,20)].map(l=>(l.value=VAL[l.id]||0,l));
+function load(){try{const a=JSON.parse(localStorage.getItem(KEY));if(Array.isArray(a)&&a.length){a.forEach(l=>{if(l.value==null)l.value=0});return a}}catch(e){}return seed()}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(leads))}catch(e){}};
 let leads=load(),S={q:'',co:'all',st:'all',sort:'created',dir:-1},mode='table',curId=null,editing=false,atype='note',awho='Owner',delArm=false,tt;
 const cur=()=>leads.find(l=>l.id==curId);
@@ -1028,19 +1018,19 @@ const isOpen=l=>l.stage!='won'&&l.stage!='lost';
 function vis(){
   const q=S.q.toLowerCase();
   const a=leads.filter(l=>(S.co=='all'||l.country==S.co)&&(mode=='pipe'||S.st=='all'||l.stage==S.st)&&(!q||[l.first,l.last,l.phone,l.email,l.business,l.info,l.address,l.country,l.pro].join(' ').toLowerCase().includes(q)));
-  const k=l=>S.sort=='stage'?STAGES.findIndex(s=>s.id==l.stage):S.sort=='created'?l.created:String(l[S.sort]||'').toLowerCase();
+  const k=l=>S.sort=='stage'?STAGES.findIndex(s=>s.id==l.stage):S.sort=='created'?l.created:S.sort=='value'?(+l.value||0):String(l[S.sort]||'').toLowerCase();
   return a.sort((x,y)=>(k(x)>k(y)?1:k(x)<k(y)?-1:0)*S.dir);
 }
 function stats(){
   const nw=leads.filter(l=>dd(TODAY,day(l.created))<=7).length,due=leads.filter(l=>isOpen(l)&&l.followUp&&l.followUp<=TODAY).length;
-  const b=[[leads.length,'Total leads'],[nw,'New in the last 7 days'],[new Set(leads.map(l=>l.country)).size,'Countries reached'],[due,'Follow-ups due']];
+  const b=[[leads.length,'Total leads'],[nw,'New in the last 7 days'],[new Set(leads.map(l=>l.country)).size,'Countries reached'],[due,'Follow-ups due'],[money(leads.filter(isOpen).reduce((t,l)=>t+(+l.value||0),0)),'Open pipeline value']];
   $('#lStats').innerHTML=b.map(x=>`<div class="stat"><b>${x[0]}</b><span>${x[1]}</span></div>`).join('');
   const n=leads.filter(l=>l.stage=='new').length,nb=$('#nb');nb.textContent=n;nb.hidden=!n;
 }
 function table(){
-  const cols=[['first','First name'],['last','Last name'],['phone','Phone',1],['business','Business info'],['address','Address'],['country','Country'],['pro','Professional'],['stage','Stage'],['created','Created'],['','View',1]];
+  const cols=[['first','First name'],['last','Last name'],['phone','Phone',1],['business','Business info'],['address','Address'],['country','Country'],['pro','Professional'],['value','Value'],['stage','Stage'],['created','Created'],['','View',1]];
   const rows=vis();
-  $('#lTable').innerHTML=`<table class="lt"><thead><tr>${cols.map(c=>`<th ${c[2]?'':`data-s="${c[0]}"`} class="${S.sort==c[0]?'on':''}">${c[1]}${c[2]?'':SORT(S.sort==c[0]?S.dir:0)}</th>`).join('')}</tr></thead><tbody>${rows.length?rows.map(l=>`<tr data-id="${l.id}" style="cursor:pointer"><td><span class="nm">${av(l)}${esc(l.first)}</span></td><td style="font-weight:600">${esc(l.last)}</td><td>${esc(l.phone)}</td><td><b>${esc(l.business)}</b><small>${esc(l.info)}</small></td><td>${esc(l.address)}</td><td>${esc(l.country)}</td><td><span class="pp">${esc(l.pro)}</span></td><td>${pill(SG(l.stage))}</td><td>${fmtD(day(l.created),1)}<small>${relDay(day(l.created))}</small></td><td><button type="button" class="vb" data-id="${l.id}">${I.eye}View</button></td></tr>`).join(''):`<tr><td colspan="10" class="lempty">No leads match these filters.</td></tr>`}</tbody></table>`;
+  $('#lTable').innerHTML=`<table class="lt"><thead><tr>${cols.map(c=>`<th ${c[2]?'':`data-s="${c[0]}"`} class="${S.sort==c[0]?'on':''}">${c[1]}${c[2]?'':SORT(S.sort==c[0]?S.dir:0)}</th>`).join('')}</tr></thead><tbody>${rows.length?rows.map(l=>`<tr data-id="${l.id}" style="cursor:pointer"><td><span class="nm">${av(l)}${esc(l.first)}</span></td><td style="font-weight:600">${esc(l.last)}</td><td>${esc(l.phone)}</td><td><b>${esc(l.business)}</b><small>${esc(l.info)}</small></td><td>${esc(l.address)}</td><td>${esc(l.country)}</td><td><span class="pp">${esc(l.pro)}</span></td><td style="font-weight:600;color:var(--green)">${money(l.value)}</td><td>${pill(SG(l.stage))}</td><td>${fmtD(day(l.created),1)}<small>${relDay(day(l.created))}</small></td><td><button type="button" class="vb" data-id="${l.id}">${I.eye}View</button></td></tr>`).join(''):`<tr><td colspan="11" class="lempty">No leads match these filters.</td></tr>`}</tbody></table>`;
 }
 function fu(l){
   if(!isOpen(l)){const n=Math.floor((Date.now()-new Date(l.closed||Date.now()))/D);return['',n?`Closed ${n}d ago`:'Closed today']}
@@ -1049,7 +1039,7 @@ function fu(l){
 }
 function pipe(){
   const rows=vis();
-  $('#lcols').innerHTML=STAGES.map(s=>{const a=rows.filter(l=>l.stage==s.id);return`<div class="col" data-stage="${s.id}"><div class="col-head"><span class="dot" style="background:${s.c}"></span><span>${s.n}</span><span class="count">${a.length}</span></div><div class="list" data-stage="${s.id}">${a.length?a.map(l=>{const t=l.acts[l.acts.length-1],f=fu(l),p=PE(l.assignee);return`<article class="lc" draggable="true" data-id="${l.id}"><div class="nm">${av(l)}<span><b>${esc(name(l))}</b><small>${esc(l.business)}</small></span></div><div class="tags"><span class="pp">${esc(l.pro)}</span><span class="tag">${esc(l.country)}</span></div>${t?`<div class="snip"><b>${AT[t.type][0]}:</b> ${esc(t.text)}</div>`:''}<div class="lf"><span class="${f[0]}">${f[1]}</span><span class="cc">${I.chat.replace(/15/g,'13')}${l.acts.length}${p?pav(p):''}</span></div></article>`}).join(''):'<div class="empty">No leads here</div>'}</div></div>`}).join('');
+  $('#lcols').innerHTML=STAGES.map(s=>{const a=rows.filter(l=>l.stage==s.id);return`<div class="col" data-stage="${s.id}"><div class="col-head"><span class="dot" style="background:${s.c}"></span><span>${s.n}</span><span class="count">${a.length}</span><span class="ct">${money(a.reduce((t,l)=>t+(+l.value||0),0))}</span></div><div class="list" data-stage="${s.id}">${a.length?a.map(l=>{const t=l.acts[l.acts.length-1],f=fu(l),p=PE(l.assignee);return`<article class="lc" draggable="true" data-id="${l.id}"><div class="nm">${av(l)}<span><b>${esc(name(l))}</b><small>${esc(l.business)}</small></span></div><div class="tags"><span class="pp">${esc(l.pro)}</span><span class="tag">${esc(l.country)}</span></div><div class="lv">${money(l.value)}</div>${t?`<div class="snip"><b>${AT[t.type][0]}:</b> ${esc(t.text)}</div>`:''}<div class="lf"><span class="${f[0]}">${f[1]}</span><span class="cc">${I.chat.replace(/15/g,'13')}${l.acts.length}${p?pav(p):''}</span></div></article>`}).join(''):'<div class="empty">No leads here</div>'}</div></div>`}).join('');
 }
 function toolbar(){
   const cs=[...new Set(leads.map(l=>l.country))].sort();if(S.co!='all'&&!cs.includes(S.co))S.co='all';
@@ -1068,7 +1058,7 @@ function modal(){
   const end=l.closed?new Date(l.closed):new Date(),dn=Math.max(0,Math.floor((end-new Date(l.created))/D)),last=l.acts[l.acts.length-1];
   const fq=(n)=>l.followUp&&l.followUp==ymd(new Date(NOW+n*D));
   const c1=editing?FIELDS.map(f=>`<div class="fld"><label>${f[1]}</label>${f[0]=='pro'?`<select id="e_pro">${PROS.map(p=>`<option${p==l.pro?' selected':''}>${p}</option>`).join('')}</select>`:`<input id="e_${f[0]}" type="${f[2]||'text'}" value="${esc(l[f[0]])}">`}</div>`).join('')+`<button type="button" class="btn-primary" data-a="save" style="justify-content:center">Save details</button>`
-  :`<div class="who">${av(l,'big')}<div><div class="wn">${esc(name(l))}</div><div class="muted">${esc(l.pro)} · ${esc(l.business)}</div></div></div><div class="chips"><a class="chip" href="tel:${esc(l.phone.replace(/\s/g,''))}">${I.phone}Call</a><a class="chip" href="mailto:${esc(l.email)}">${I.mail}Email</a><a class="chip" href="https://wa.me/${wa}" target="_blank" rel="noopener">${I.chat}WhatsApp</a></div><div>${kv('Phone',`<a href="tel:${esc(l.phone.replace(/\s/g,''))}">${esc(l.phone)}</a>`)+kv('Email',`<a href="mailto:${esc(l.email)}">${esc(l.email)}</a>`)+kv('Business',esc(l.business))+kv('Business info',esc(l.info))+kv('Address',esc(l.address))+kv('Country',esc(l.country))+kv('Professional',esc(l.pro))+kv('Source',esc(l.source))+kv('Created',`${fmtD(day(l.created),1)} <span class="none">(${relDay(day(l.created))})</span>`)}</div><div class="msgb"><b>Website message</b>${esc(l.message)}</div>`;
+  :`<div class="who">${av(l,'big')}<div><div class="wn">${esc(name(l))}</div><div class="muted">${esc(l.pro)} · ${esc(l.business)}</div></div></div><div class="chips"><a class="chip" href="tel:${esc(l.phone.replace(/\s/g,''))}">${I.phone}Call</a><a class="chip" href="mailto:${esc(l.email)}">${I.mail}Email</a><a class="chip" href="https://wa.me/${wa}" target="_blank" rel="noopener">${I.chat}WhatsApp</a></div><div>${kv('Phone',`<a href="tel:${esc(l.phone.replace(/\s/g,''))}">${esc(l.phone)}</a>`)+kv('Email',`<a href="mailto:${esc(l.email)}">${esc(l.email)}</a>`)+kv('Business',esc(l.business))+kv('Business info',esc(l.info))+kv('Address',esc(l.address))+kv('Country',esc(l.country))+kv('Professional',esc(l.pro))+kv('Value',`<b style="color:var(--green)">${money(l.value)}</b>`)+kv('Source',esc(l.source))+kv('Created',`${fmtD(day(l.created),1)} <span class="none">(${relDay(day(l.created))})</span>`)}</div><div class="msgb"><b>Website message</b>${esc(l.message)}</div>`;
   $('#lm').innerHTML=`<div class="m-head"><div><div class="eyebrow">LEAD · ${esc(l.id)}</div><div class="lh"><h2>${esc(name(l))}</h2>${pill(st)}</div></div><button type="button" class="x" data-a="close" aria-label="Close">&times;</button></div>
 <div class="lbody">
 <div class="pane"><div class="ph"><div class="pane-t">Contact</div><button type="button" class="link-btn" data-a="edit">${editing?'Cancel':'Edit details'}</button></div>${c1}</div>
@@ -1076,6 +1066,7 @@ function modal(){
 <div class="prog">${STAGES.map((s,i)=>`<i class="${i<=idx?'f':''}"${i<=idx&&pc?` style="background:${pc}"`:''}></i>`).join('')}</div>
 <div class="fld"><span class="lbl">Stage <span class="hint">(logged on the timeline)</span></span><div class="sg">${STAGES.map(s=>`<button type="button" class="sb${s.id==l.stage?' on':''}" data-a="stage" data-v="${s.id}"><span class="dot" style="background:${s.c}"></span>${s.n}</button>`).join('')}</div></div>
 <div class="ms"><div><span>In pipeline</span><b>${dn} day${dn==1?'':'s'}</b></div><div><span>Last activity</span><b>${last?rel(last.at):'None'}</b></div><div><span>Activities</span><b>${l.acts.length}</b></div></div>
+<div class="fld"><label for="lVal">Opportunity value <span class="hint">(USD)</span></label><input type="number" id="lVal" min="0" step="1" value="${+l.value||0}"></div>
 <div class="fld"><label for="lFu">Next follow-up</label><input type="date" id="lFu" value="${l.followUp}"><div class="chips">${[['Tomorrow',1],['In 3 days',3],['Next week',7]].map(x=>`<button type="button" class="chip${fq(x[1])?' on':''}" data-a="fu" data-v="${x[1]}">${x[0]}</button>`).join('')}<button type="button" class="chip" data-a="fu" data-v="">Clear</button></div></div>
 <div class="fld"><span class="lbl">Assigned to</span><div class="chips"><button type="button" class="chip${l.assignee?'':' on'}" data-a="as" data-v="">Unassigned</button>${PEOPLE.map(p=>`<button type="button" class="chip${l.assignee==p.id?' on':''}" data-a="as" data-v="${p.id}" style="color:var(--ink)">${pav(p,'')}${p.name}</button>`).join('')}</div></div></div>
 <div class="pane"><div class="pane-t">Activity</div><span class="lbl">Log activity</span>
@@ -1100,7 +1091,7 @@ $('#lm').addEventListener('click',e=>{
   const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,v=b.dataset.v,l=cur();
   if(a=='close')close();
   else if(a=='edit'){editing=!editing;modal()}
-  else if(a=='save'){FIELDS.forEach(f=>{l[f[0]]=$('#e_'+f[0]).value.trim()});if(!l.first){toast('First name is required');return}l.acts.push({id:'a'+Date.now(),type:'update',author:'Owner',text:'Contact details updated',at:new Date().toISOString()});editing=false;save();render();toast('Details saved')}
+  else if(a=='save'){FIELDS.forEach(f=>{l[f[0]]=$('#e_'+f[0]).value.trim()});l.value=Math.max(0,parseFloat(l.value)||0);if(!l.first){toast('First name is required');return}l.acts.push({id:'a'+Date.now(),type:'update',author:'Owner',text:'Contact details updated',at:new Date().toISOString()});editing=false;save();render();toast('Details saved')}
   else if(a=='stage')setStage(l,v);
   else if(a=='fu'){l.followUp=v==''?'':ymd(new Date(Date.now()+v*D));save();render()}
   else if(a=='as'){l.assignee=v;save();render()}
@@ -1108,7 +1099,7 @@ $('#lm').addEventListener('click',e=>{
   else if(a=='log')log();
   else if(a=='del'){if(!delArm){delArm=true;modal();return}leads=leads.filter(x=>x.id!=l.id);save();close();render();toast('Lead deleted')}
 });
-$('#lm').addEventListener('change',e=>{const l=cur();if(e.target.id=='lFu'){l.followUp=e.target.value;save();render()}if(e.target.id=='lWho')awho=e.target.value});
+$('#lm').addEventListener('change',e=>{const l=cur();if(e.target.id=='lFu'){l.followUp=e.target.value;save();render()}if(e.target.id=='lVal'){l.value=Math.max(0,parseFloat(e.target.value)||0);save();render()}if(e.target.id=='lWho')awho=e.target.value});
 $('#lm').addEventListener('keydown',e=>{if(e.target.id=='lText'&&e.key=='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();log()}});
 $('#lov').addEventListener('mousedown',e=>{if(e.target.id=='lov')close()});
 
@@ -1121,7 +1112,7 @@ function openAdd(){
 $('#aS').addEventListener('click',()=>{
   const g=k=>$('#n_'+k).value.trim();if(!g('first')){$('#n_first').focus();return}
   const n=Math.max(1000,...leads.map(l=>parseInt(l.id.replace(/\D/g,''))||0))+1,iso=new Date().toISOString(),l={id:'L-'+n,source:'Manual entry',message:g('msg')||'Added manually.',created:iso,followUp:'',assignee:'',closed:'',stage:'new',acts:[{id:'a'+n,type:'created',author:'Owner',text:'Lead added manually',at:iso}]};
-  AF.forEach(f=>{l[f[0]]=g(f[0])});leads.push(l);save();$('#aov').hidden=true;render();toast(l.id+' added');
+  AF.forEach(f=>{l[f[0]]=g(f[0])});l.value=Math.max(0,parseFloat(l.value)||0);leads.push(l);save();$('#aov').hidden=true;render();toast(l.id+' added');
 });
 ['#aX','#aC'].forEach(s=>$(s).addEventListener('click',()=>$('#aov').hidden=true));
 $('#aov').addEventListener('mousedown',e=>{if(e.target.id=='aov')e.target.hidden=true});
@@ -1131,8 +1122,8 @@ $('#lExport').innerHTML=I.dl+'Export CSV';$('#lAdd').innerHTML=I.plus+'Add lead'
 document.querySelector('#lVT [data-m=table]').innerHTML=I.list+'Table';document.querySelector('#lVT [data-m=pipe]').innerHTML=I.board+'Pipeline';
 $('#lAdd').addEventListener('click',openAdd);
 $('#lExport').addEventListener('click',()=>{
-  const h=['First name','Last name','Phone','Email','Business','Business info','Address','Country','Professional','Stage','Source','Created','Follow-up','Assigned to'];
-  const r=vis().map(l=>[l.first,l.last,l.phone,l.email,l.business,l.info,l.address,l.country,l.pro,SG(l.stage).n,l.source,day(l.created),l.followUp,(PE(l.assignee)||{}).name||'']);
+  const h=['First name','Last name','Phone','Email','Business','Business info','Address','Country','Professional','Value','Stage','Source','Created','Follow-up','Assigned to'];
+  const r=vis().map(l=>[l.first,l.last,l.phone,l.email,l.business,l.info,l.address,l.country,l.pro,l.value||0,SG(l.stage).n,l.source,day(l.created),l.followUp,(PE(l.assignee)||{}).name||'']);
   const csv=[h,...r].map(x=>x.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n'),a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='website-leads.csv';document.body.appendChild(a);a.click();a.remove();toast('Exported '+r.length+' leads');
 });
